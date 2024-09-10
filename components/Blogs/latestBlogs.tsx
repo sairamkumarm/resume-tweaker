@@ -10,6 +10,7 @@ import {
 import Link from "next/link"
 import { ArrowUpRight, Calendar } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "../ui/button"
 
 export default function LatestBlogs() {
   return (
@@ -42,8 +43,8 @@ export default function LatestBlogs() {
                       <Calendar className="mr-2 h-4 w-4" />
                       {blog.date}
                     </div>
-                    <div className="flex items-center text-primary font-semibold group-hover:underline">
-                      <span>Read more</span>
+                    <div className="flex items-center font-semibold group-hover:underline">
+                      <Button variant={"link"}>Read more</Button>
                       <ArrowUpRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </div>
                   </CardFooter>

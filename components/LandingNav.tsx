@@ -10,7 +10,7 @@ export function LandingNav() {
         <nav className="w-full flex items-center justify-between py-2 fixed top-0 left-0 right-0 px-36 h-auto mb-10 z-[49] backdrop-blur-lg" style={{ margin: '0 auto', textAlign: 'center' }}>
             <Link href={"/"} className="font-semibold flex items-center gap-4">
                 <img className="size-14" src="/svgs/logo.svg" alt="logo" />
-                <span className="block">Brand-name</span>
+                <span className="block">Resume-tweaker</span>
             </Link>
             {pathname === "/" && (
                 <div className="flex gap-4 mx-auto">
