@@ -1,43 +1,58 @@
-import { featuredBlogs } from "@/data/BlogsData";
-import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "../ui/card";
-import Link from "next/link";
+import Image from "next/image"
+import Link from "next/link"
+import { featuredBlogs } from "@/data/BlogsData"
+import { CalendarIcon, ClockIcon, ArrowRightIcon } from "lucide-react"
 
-export default function FeaturedBlogs() {
-    return(
-       <div className="my-8">
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-8">
-                Featured Blogs
-            </h1>
-            <div className="grid grid-cols-3 grid-rows-2 w-full gap-4">
-              {featuredBlogs.length > 0 && featuredBlogs.map((blog, idx) => (
-                <Link href={`blogs/${blog.id}`} key={blog.id}  
-                className={`${
-                    idx === 0 || idx === featuredBlogs.length-2
-                    ? "col-span-2 row-span-2 min-h-[25rem] max-h-[55rem]"  
-                    : "col-span-1 row-span-1 h-auto" 
-                  } relative rounded-md overflow-hidden cursor-pointer`}>
-                    <Card key={idx} className="overflow-hidden relative">
-                        <img 
-                          src={blog.thumbnail} 
-                          className="bottom-0 w-full h-full object-fill overflow-hidden shadow-inner rounded-md shadow-purple-950" 
-                          alt={blog.title} 
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-purple-900/30 to-transparent z-[10]"></div>
-                        {(idx === 0 || idx === featuredBlogs.length-2) ? (
-                            <CardFooter className="absolute flex flex-col items-start gap-4 bottom-4 z-20 text-white">
-                                 <CardTitle className="text-2xl">{blog.title}</CardTitle>
-                                 <CardDescription>{blog.desc}</CardDescription>
-                            </CardFooter>
-                        ) : (
-                            <CardHeader className="absolute flex flex-col items-start gap-4 top-1/2 transform -translate-y-1/2 z-20 text-white">
-                                 <CardTitle className="text-2xl">{blog.title}</CardTitle>
-                                 <CardDescription>{blog.desc.substring(0, 150) + "..."}</CardDescription>
-                            </CardHeader>
-                        )}
-                    </Card>
-                </Link>
-              ))}
+export default function BentoGrid() {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-5xl mb-8">
+          Featured Blogs
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredBlogs.map((blog, index) => (
+          <Link
+            key={index}
+            href={`blogs/${blog.id}`}
+            className={`group relative overflow-hidden rounded-xl ${
+              index === 0
+                ? "md:col-span-2 md:row-span-2"
+                : index === featuredBlogs.length - 1
+                ? "md:col-span-2"
+                : ""
+            }`}
+          >
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 transition-opacity group-hover:opacity-80" />
+            <Image
+              src={blog.image}
+              alt={blog.title}
+              width={800}
+              height={600}
+              className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            />
+            <div className="absolute inset-0 flex flex-col justify-end p-6">
+              <div className="mb-2 text-sm font-medium text-white bg-primary/60 rounded-full px-3 py-1 w-fit">
+                {blog.category}
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">{blog.title}</h3>
+              <p className="text-sm text-gray-200 mb-4">{blog.excerpt}</p>
+              <div className="flex items-center text-xs text-gray-300 space-x-4">
+                <span className="flex items-center">
+                  <CalendarIcon className="w-4 h-4 mr-1" />
+                  {blog.date}
+                </span>
+                <span className="flex items-center">
+                  <ClockIcon className="w-4 h-4 mr-1" />
+                  {blog.readTime}
+                </span>
+              </div>
             </div>
-       </div>
-    )
+            <div className="absolute top-4 right-4 bg-white/20 p-2 rounded-full opacity-0 transition-opacity group-hover:opacity-100">
+              <ArrowRightIcon className="w-4 h-4 text-white" />
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  )
 }
