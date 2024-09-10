@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { featuredBlogs } from "@/data/BlogsData"
+import { Badge } from "../ui/badge"
 import { CalendarIcon, ClockIcon, ArrowRightIcon } from "lucide-react"
 
 export default function BentoGrid() {
@@ -30,10 +31,10 @@ export default function BentoGrid() {
               height={600}
               className="h-full w-full object-cover transition-transform group-hover:scale-105"
             />
-            <div className="absolute inset-0 flex flex-col justify-end p-6">
-              <div className="mb-2 text-sm font-medium text-white bg-primary/60 rounded-full px-3 py-1 w-fit">
+            <div className="absolute inset-0 flex flex-col justify-end p-6 bg-gradient-to-t from-black/20 via-transparent to-transparent">
+              <Badge className="w-fit mb-3">
                 {blog.category}
-              </div>
+              </Badge>
               <h3 className="text-xl font-bold text-white mb-2">{blog.title}</h3>
               <p className="text-sm text-gray-200 mb-4">{blog.excerpt}</p>
               <div className="flex items-center text-xs text-gray-300 space-x-4">
