@@ -1,23 +1,62 @@
-"use client";
-import { BackgroundBeams } from "./ui/background-beams";
+'use client'
+
+import { useState } from 'react'
+import { BackgroundBeams } from "./ui/background-beams"
+import { Button } from "./ui/button"
+import { Input } from './ui/input'
+import { motion } from "framer-motion"
 
 export function Hero() {
+  const [email, setEmail] = useState('')
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // Handle email submission logic here
+    console.log('Submitted email:', email)
+    setEmail('')
+  }
+
   return (
-    <div className="h-[40rem] w-full rounded-md relative flex flex-col items-center justify-center antialiased">
+    <div className="min-h-screen w-full rounded-md relative flex flex-col items-center justify-center antialiased">
       <div className="max-w-2xl mx-auto p-4">
-        <h1 className="relative z-10 text-lg md:text-7xl  bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600  text-center font-sans font-bold">
-          Coming soon!
-        </h1>
-        <p></p>
-        <p className="text-neutral-500 max-w-lg mx-auto my-2 text-sm text-center relative z-10">
-          Welcome to Resume-tweaker, the best transactional email service on the web.
-          We provide reliable, scalable, and customizable email solutions for
-          your business. Whether you&apos;re sending order confirmations,
-          password reset emails, or promotional campaigns, MailJet has got you
-          covered.
-        </p>
+        <motion.h1 
+          className="relative z-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-center font-sans font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-zinc-200 to-zinc-600 dark:from-zinc-200 dark:to-zinc-500"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          Elevate Your Resume with AI
+        </motion.h1>
+        <motion.p 
+          className="text-zinc-700 dark:text-zinc-300 max-w-lg mx-auto my-2 text-sm sm:text-base text-center relative z-10 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Craft a standout resume effortlessly with the power of AI. Get personalized suggestions, optimize content, and ensure your resume aligns with the job market—designed to help you land your dream job faster.
+        </motion.p>
+        <motion.form 
+          onSubmit={handleSubmit}
+          className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <Input
+            type="email"
+            id="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full sm:w-64 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 border-zinc-300 dark:border-zinc-700 focus:border-zinc-500 dark:focus:border-zinc-500 focus:ring-zinc-500 dark:focus:ring-zinc-500"
+            required
+          />
+          <Button type="submit" className="w-full sm:w-auto bg-zinc-800 text-zinc-100 hover:bg-zinc-700 dark:bg-zinc-200 dark:text-zinc-900 dark:hover:bg-zinc-300">
+            Join Waitlist
+          </Button>
+        </motion.form>
       </div>
       <BackgroundBeams />
     </div>
-  );
+  )
 }
