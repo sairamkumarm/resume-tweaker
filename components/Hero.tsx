@@ -20,7 +20,7 @@ export function Hero() {
     <div className="min-h-screen w-full rounded-md relative flex flex-col items-center justify-center antialiased">
       <div className="max-w-2xl mx-auto p-4">
         <motion.h1 
-          className="relative z-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-center font-sans font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-zinc-200 to-zinc-600 dark:from-zinc-200 dark:to-zinc-500"
+          className="relative z-10 text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-center font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-b from-zinc-200 to-zinc-600 dark:from-zinc-200 dark:to-zinc-500"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -33,7 +33,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          Craft a standout resume effortlessly with the power of AI. Get personalized suggestions, optimize content, and ensure your resume aligns with the job market—designed to help you land your dream job faster.
+          Craft a standout resume with ease using the power of AI. Receive tailored suggestions, optimize your content for specific job roles, and ensure your resume perfectly aligns with job descriptions—designed to accelerate your path to landing your dream job.
         </motion.p>
         <motion.form 
           onSubmit={handleSubmit}

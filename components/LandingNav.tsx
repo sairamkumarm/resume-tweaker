@@ -30,11 +30,11 @@ export function LandingNav() {
                       <Image
                         src="/svgs/logo.svg"
                         alt="Resume Tweaker Logo"
-                        width={32}
-                        height={32}
-                        className="h-8 w-auto"
+                        width={18}
+                        height={18}
+                        className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16"
                       />
-                      <span className="hidden sm:block text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">
+                      <span className="sm:block text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">
                         <span className="text-zinc-500 dark:text-zinc-400">resume</span>
                         <span className="font-bold">tweaker</span>
                       </span>
@@ -47,7 +47,7 @@ export function LandingNav() {
                                     <Link
                                         key={item.label}
                                         href={item.href}
-                                        className="hover:underline hover:text-primary transition-all duration-200 px-3 py-2 rounded-md text-sm font-medium"
+                                        className="hover:underline hover:text-primary hover:scale-105 transition-all duration-200 px-3 py-2 rounded-md text-sm font-medium"
                                     >
                                         {item.label}
                                     </Link>
@@ -71,9 +71,9 @@ export function LandingNav() {
                         >
                             <span className="sr-only">Open main menu</span>
                             {isMenuOpen ? (
-                                <X className="block h-6 w-6" aria-hidden="true" />
+                                <X className="block h-6 w-6 text-primary" aria-hidden="true" />
                             ) : (
-                                <Menu className="block h-6 w-6" aria-hidden="true" />
+                                <Menu className="block h-6 w-6 text-primary" aria-hidden="true" />
                             )}
                         </button>
                     </div>
