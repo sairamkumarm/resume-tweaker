@@ -67,6 +67,8 @@ export default function BlogForm() {
               <Input
                 id="title"
                 name="title"
+                className='input'
+                placeholder='Enter the title'
                 value={formData.title}
                 onChange={handleInputChange}
                 required
@@ -77,6 +79,8 @@ export default function BlogForm() {
               <Textarea
                 id="excerpt"
                 name="excerpt"
+                className='input'
+                placeholder='Enter excerpt'
                 value={formData.excerpt}
                 onChange={handleInputChange}
                 required
@@ -88,15 +92,16 @@ export default function BlogForm() {
                 id="content"
                 name="content"
                 value={formData.content}
+                placeholder='Enter the content'
                 onChange={handleInputChange}
                 required
-                className="min-h-[200px]"
+                className="min-h-[200px] input"
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select name="category" onValueChange={handleCategoryChange} required>
-                <SelectTrigger>
+                <SelectTrigger className='input'>
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -113,7 +118,8 @@ export default function BlogForm() {
               <Input
                 id="author"
                 name="author"
-                value={formData.author}
+                className='input'
+                value={"Wibblit"}
                 onChange={handleInputChange}
                 required
               />
@@ -128,7 +134,7 @@ export default function BlogForm() {
                   onChange={handleImageChange}
                   accept="image/*"
                   required
-                  className="flex-grow"
+                  className="flex-grow input"
                 />
                 <Button type="button" variant="outline" size="icon">
                   <Upload className="h-4 w-4" />

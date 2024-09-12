@@ -28,7 +28,7 @@ export function Hero() {
           Elevate Your Resume with AI
         </motion.h1>
         <motion.p 
-          className="text-zinc-700 dark:text-zinc-300 max-w-lg mx-auto my-2 text-sm sm:text-base text-center relative z-10 mb-8"
+          className="text-zinc-700 dark:text-zinc-300 max-w-2xl mx-auto my-2 text-sm sm:text-base md:text-xl text-center relative z-10 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
@@ -48,10 +48,10 @@ export function Hero() {
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full sm:w-64 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 placeholder-zinc-500 dark:placeholder-zinc-400 border-zinc-300 dark:border-zinc-700 focus:border-zinc-500 dark:focus:border-zinc-500 focus:ring-zinc-500 dark:focus:ring-zinc-500"
+            className="w-full sm:w-64 input"
             required
           />
-          <Button type="submit" className="w-full sm:w-auto bg-zinc-800 text-zinc-100 hover:bg-zinc-700 dark:bg-zinc-200 dark:text-zinc-900 dark:hover:bg-zinc-300">
+          <Button type="submit" className="w-full sm:w-auto">
             Join Waitlist
           </Button>
         </motion.form>
