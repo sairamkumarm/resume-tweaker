@@ -83,7 +83,7 @@ export default function BlogPost() {
 
   return (
     <article className="container mx-auto px-4 py-8 max-w-4xl">
-      <Breadcrumbs />
+      <Breadcrumbs currPage={blog.title} />
       <header className="mb-8">
         <Badge className="mb-4">{blog.category}</Badge>
         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">

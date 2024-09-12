@@ -7,8 +7,13 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
   } from "@/components/ui/breadcrumb"
+  import React from "react";
 
-  export function Breadcrumbs() {
+  interface BreadcrumbProps {
+    currPage: string;
+  }
+
+  export const Breadcrumbs: React.FC<BreadcrumbProps> = ({ currPage }) => {
     return (
       <Breadcrumb className="my-5">
         <BreadcrumbList>
@@ -21,7 +26,7 @@ import {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>Blog</BreadcrumbPage>
+            <BreadcrumbPage className="line-clamp-1">{currPage}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
