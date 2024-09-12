@@ -1,22 +1,18 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/theme-provider";
 
-const geistSans = localFont({
-  src: "./fonts/Chillax_Complete/Fonts/WEB/fonts/Chillax-Variable.ttf",
+const LTWave = localFont({
+  src: "./fonts/LTWave-Regular.ttf",
   variable: "--font-geist-sans",
-  weight: "100 600",
+  weight: "100 900",
 });
-// const geistMono = localFont({
-//   src: "./fonts/GeistMonoVF.woff",
-//   variable: "--font-geist-mono",
-//   weight: "100 900",
-// });
 
 export const metadata: Metadata = {
   title: "Wibblit Resume Tweaker",
-  description: "Craft a standout resume with ease using the power of AI. Receive tailored suggestions, optimize your content for specific job roles, and ensure your resume perfectly aligns with job descriptions—designed to accelerate your path to landing your dream job.",
+  description:
+    "Craft a standout resume with ease using the power of AI. Receive tailored suggestions, optimize your content for specific job roles, and ensure your resume perfectly aligns with job descriptions—designed to accelerate your path to landing your dream job.",
 };
 
 export default function RootLayout({
@@ -26,9 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.className} antialiased`}
-      >
+      <head>
+        <link
+          href="https://fonts.cdnfonts.com/css/lt-wave-2"
+          rel="stylesheet"
+        />
+      </head>
+      <body className={`${LTWave.className} antialiased font-custom`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
