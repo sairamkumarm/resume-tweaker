@@ -35,9 +35,9 @@ export default function BentoGrid() {
               <Badge className="w-fit mb-3">
                 {blog.category}
               </Badge>
-              <h3 className="text-xl font-bold text-white mb-2">{blog.title}</h3>
-              <p className="text-sm text-gray-200 mb-4">{blog.excerpt}</p>
-              <div className="flex items-center text-xs text-gray-300 space-x-4">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-2">{blog.title}</h3>
+              <p className="text-sm md:text-lg text-gray-200 mb-4">{blog.excerpt}</p>
+              <div className="flex items-center text-xs md:text-base text-gray-300 space-x-4">
                 <span className="flex items-center">
                   <CalendarIcon className="w-4 h-4 mr-1" />
                   {blog.date}

@@ -3,11 +3,11 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
-const LTWave = localFont({
-  src: "./fonts/LTWave-Regular.ttf",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
+// const LTWave = localFont({
+//   src: "./fonts/LTWave-Regular.ttf",
+//   variable: "--font-geist-sans",
+//   weight: "100 900",
+// });
 
 export const metadata: Metadata = {
   title: "Wibblit Resume Tweaker",
@@ -28,7 +28,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`${LTWave.className} antialiased font-custom`}>
+      <body className={` antialiased font-custom`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
