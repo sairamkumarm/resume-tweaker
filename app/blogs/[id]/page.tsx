@@ -1,18 +1,22 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, Clock, User, ChevronUp, ChevronDown } from 'lucide-react'
+import { Calendar, Clock, User, ChevronUp, ChevronDown, Zap, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Breadcrumbs } from '@/components/BlogBreadCrumbs'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function BlogPost() {
   const [activeSection, setActiveSection] = useState('')
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isTableOfContentsOpen, setIsTableOfContentsOpen] = useState(false)
+  const [sparkCount, setSparkCount] = useState(0)
+  const [hasSparked, setHasSparked] = useState(false)
+  const [showSparkAnimation, setShowSparkAnimation] = useState(false)
 
   const blog = {
     id: 1,
@@ -77,6 +81,15 @@ export default function BlogPost() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  const handleSpark = () => {
+    if (!hasSparked) {
+      setSparkCount(prevCount => prevCount + 1)
+      setHasSparked(true)
+      setShowSparkAnimation(true)
+      setTimeout(() => setShowSparkAnimation(false), 1000)
+    }
+  }
+
   if (!blog) {
     return <div>Blog post not found</div>
   }
@@ -101,6 +114,10 @@ export default function BlogPost() {
           <div className="flex items-center">
             <Clock className="mr-2 h-4 w-4" />
             <span>{blog.readTime}</span>
+          </div>
+          <div className="flex gap-x-1 items-center">
+            <Zap className="h-6 w-6 text-yellow-400" />
+            <span>15662</span>
           </div>
         </div>
       </header>
@@ -153,13 +170,39 @@ export default function BlogPost() {
           </section>
         ))}
       </div>
-      <div className="mt-12 flex justify-between items-center">
-        <Button variant="outline" asChild>
+      <div className="mt-12 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <Button variant="outline" asChild className="w-full sm:w-auto">
           <Link href="/blogs">Back to all blogs</Link>
         </Button>
-        <div className="flex gap-4">
-          <Button variant="outline">Share</Button>
-          <Button>Subscribe</Button>
+        <div className="flex flex-col md:flex-row gap-4 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            onClick={handleSpark}
+            disabled={hasSparked}
+            className="relative w-full xs:w-auto"
+          >
+            <Zap className={`h-5 w-5 mr-2 ${hasSparked ? 'text-yellow-400' : ''}`} />
+            Spark {sparkCount > 0 && `(${sparkCount})`}
+            <AnimatePresence>
+              {showSparkAnimation && (
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center"
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1.5, opacity: 1 }}
+                  exit={{ scale: 0, opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Zap className="h-8 w-8 text-yellow-400" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Button>
+          <Button asChild className="w-full xs:w-auto">
+            <Link href="/product" className="flex items-center justify-center">
+              Try Our Product
+              <ExternalLink className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         </div>
       </div>
       {showScrollTop && (
