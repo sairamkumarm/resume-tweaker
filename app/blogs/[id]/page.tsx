@@ -22,7 +22,7 @@ export default function BlogPost() {
     id: 1,
     title: "The Future of Web Development",
     excerpt: "Exploring upcoming trends and technologies shaping the web.",
-    image: "/blogImages/blog5.png",
+    image: "",
     date: "2023-08-15",
     readTime: "5 min read",
     category: "Technology",
