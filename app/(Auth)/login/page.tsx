@@ -21,10 +21,19 @@ export default function LoginPage() {
     }, 2000)
   }
 
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="32"
+    height="32"
+    viewBox="0 0 32 32"
+  >
+   
+  </svg>;
+
   const providerConfig = [
-    { name: 'Google', icon: <Image width={10} height={20} src={"./socialmedia/google.svg"} alt='google' />, },
-    { name: 'LinkedIn', icon: <Image width={20} height={20} src={"./socialmedia/linkedin.svg"} alt='linkedin' />, },
-    { name: 'Apple', icon: <Image width={20} height={20} src={"./socialmedia/apple.svg"} alt='apple' />,},
+    { name: 'Google', icon: <Image width={20} height={20} src={"/svgs/socialmedia/google.svg"} alt='google' />, },
+    { name: 'LinkedIn', icon: <Image width={20} height={20} src={"/svgs/socialmedia/linkedin.svg"} alt='linkedin' />, },
+    { name: 'Apple', icon: <Image width={20} height={20} src={"/svgs/socialmedia/apple.svg"} alt='apple' />,},
   ]
 
   const themeOptions = [
@@ -43,7 +52,9 @@ export default function LoginPage() {
       >
         <Card className="border-zinc-200 dark:border-zinc-800 shadow-lg">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-bold text-center">Sign in</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center">
+              Sign in
+            </CardTitle>
             <CardDescription className="text-center">
               Choose your preferred sign-in method
             </CardDescription>
@@ -57,15 +68,15 @@ export default function LoginPage() {
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
                 <Button
-                  className={`w-full  font-semibold py-2 px-4 rounded-md shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center`}
+                  className={`w-full  font-semibold py-2 px-4 rounded-md shadow-sm hover:shadow-md text-center transition-all duration-200 flex items-center justify-center`}
                   onClick={() => handleOAuthLogin(provider.name)}
                   variant={"default"}
                   disabled={isLoading}
                 >
-                  <div className="mr-2 text-lg">
+                  <div className="w-1/4 justify-around gap-2 text-lg flex flex-row">
                     {provider.icon}
+                    {isLoading ? "Signing in..." : `${provider.name}`}
                   </div>
-                  {isLoading ? 'Signing in...' : `Continue with ${provider.name}`}
                 </Button>
               </motion.div>
             ))}
@@ -73,9 +84,19 @@ export default function LoginPage() {
           <CardFooter className="flex flex-col space-y-4">
             <div className="text-sm text-zinc-500 dark:text-zinc-400 text-center">
               By signing in, you agree to our
-              <a href="#" className="text-zinc-900 dark:text-zinc-100 hover:underline ml-1">Terms of Service</a>
+              <a
+                href="#"
+                className="text-zinc-900 dark:text-zinc-100 hover:underline ml-1"
+              >
+                Terms of Service
+              </a>
               <span className="mx-1">and</span>
-              <a href="#" className="text-zinc-900 dark:text-zinc-100 hover:underline">Privacy Policy</a>
+              <a
+                href="#"
+                className="text-zinc-900 dark:text-zinc-100 hover:underline"
+              >
+                Privacy Policy
+              </a>
             </div>
             <div className="flex justify-center space-x-2">
               {themeOptions.map((option) => (
@@ -84,7 +105,9 @@ export default function LoginPage() {
                   variant="outline"
                   size="sm"
                   onClick={() => setTheme(option.name)}
-                  className={`${theme === option.name ? 'bg-zinc-200 dark:bg-zinc-700' : ''}`}
+                  className={`${
+                    theme === option.name ? "bg-zinc-200 dark:bg-zinc-700" : ""
+                  }`}
                 >
                   <option.icon className="h-[1.2rem] w-[1.2rem]" />
                   <span className="sr-only">{option.name} theme</span>
@@ -95,5 +118,5 @@ export default function LoginPage() {
         </Card>
       </motion.div>
     </div>
-  )
+  );
 }
