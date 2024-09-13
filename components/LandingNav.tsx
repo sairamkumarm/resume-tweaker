@@ -7,10 +7,12 @@ import { Menu, X } from "lucide-react";
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export function LandingNav() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -61,7 +63,7 @@ export function LandingNav() {
           <div className="hidden md:block">
             <div className="ml-4 flex items-center md:ml-6">
               <ModeToggle />
-              <Button className="ml-3">Login</Button>
+              <Button className="ml-3" onClick={() => router.push("/login")}>Login</Button>
             </div>
           </div>
           <div className="-mr-2 flex md:hidden">
@@ -102,7 +104,7 @@ export function LandingNav() {
           <div className="pt-4 pb-3 border-t border-primary">
             <div className="flex items-center px-5">
               <ModeToggle />
-              <Button className="ml-auto">Login</Button>
+              <Button className="ml-auto" onClick={() => router.push("/login")}>Login</Button>
             </div>
           </div>
         </div>
