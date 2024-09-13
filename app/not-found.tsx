@@ -37,15 +37,17 @@ export default function Custom404() {
 
 	return (
 		<div className="min-h-screen bg-background text-foreground flex flex-col overflow-hidden">
-			<LandingNav/>
+			<LandingNav />
 			{/* 404 Content */}
 			<main className="flex-grow flex items-center justify-center p-4 relative z-10">
 				<div className="text-center">
-					<h1 className="text-9xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-zinc-500 to-zinc-300 animate-pulse">
+					<h1 className="text-9xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r dark:from-zinc-500 dark:to-zinc-500 from-zinc-900 to-zinc-900 animate-pulse">
 						404
 					</h1>
-					<p className="text-2xl mb-8 animate-fade-in-up">Oops! You've ventured into the void.</p>
-					<p className="text-lg mb-8 max-w-md mx-auto">
+					<p className="text-2xl mb-8 animate-fade-in-up dark:text-zinc-400 text-zinc-900">
+						Oops! You've ventured into the void.
+					</p>
+					<p className="text-lg mb-8 max-w-md mx-auto dark:text-zinc-400 text-zinc-900">
 						The page you're looking for doesn't exist or has been moved to another dimension.
 					</p>
 					<div className="space-x-4">
