@@ -39,7 +39,10 @@ interface Page {
   content: string;
 }
 
-const PAGE_FORMATS = {
+const PAGE_FORMATS: {
+  A4: { width: string; height: string };
+  LETTER: { width: string; height: string };
+} = {
   A4: { width: "210mm", height: "297mm" },
   LETTER: { width: "216mm", height: "279mm" },
 };
@@ -50,7 +53,7 @@ export default function ResumeBuilder() {
   const [activeSection, setActiveSection] = useState<string>("basics");
   const [pages, setPages] = useState<Page[]>([{ id: 1, content: "" }]);
   const [activePage, setActivePage] = useState<number>(1);
-  const [pageFormat, setPageFormat] = useState<string>("A4");
+ const [pageFormat, setPageFormat] = useState<"A4" | "LETTER">("A4");
   const [zoom, setZoom] = useState<number>(100);
   const [history, setHistory] = useState<Page[][]>([[]]);
   const [historyIndex, setHistoryIndex] = useState<number>(0);
