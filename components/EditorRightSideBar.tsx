@@ -7,7 +7,6 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-  SheetFooter,
 } from "@/components/ui/sheet"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "@/components/ui/label"
@@ -17,13 +16,32 @@ import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronRight, ChevronDown } from "lucide-react"
+import { ChevronRight, ChevronDown, Search } from "lucide-react"
+
+const fonts = [
+  "Arial", "Calibri", "Cambria", "Comfortaa", "Courier New", "EB Garamond", 
+  "Fira Sans", "Georgia", "Helvetica", "Lato", "Lora", "Merriweather", 
+  "Montserrat", "Nunito", "Open Sans", "Oswald", "Playfair Display", "Poppins", 
+  "Roboto", "Roboto Serif", "Source Sans Pro", "Times New Roman", "Ubuntu", "Verdana"
+]
+
+const templates = [
+  { name: "Professional", image: "/placeholder.svg?height=200&width=150" },
+  { name: "Creative", image: "/placeholder.svg?height=200&width=150" },
+  { name: "Executive", image: "/placeholder.svg?height=200&width=150" },
+  { name: "Technical", image: "/placeholder.svg?height=200&width=150" },
+  { name: "Academic", image: "/placeholder.svg?height=200&width=150" },
+  { name: "Student", image: "/placeholder.svg?height=200&width=150" },
+]
 
 export default function RightSideBar() {
   const { theme, setTheme } = useTheme()
   const [dark, setDark] = useState<boolean>(theme === "dark")
   const [margin, setMargin] = useState<number>(20)
   const [paperFormat, setPaperFormat] = useState<string>("A4")
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("")
+  const [selectedFont, setSelectedFont] = useState<string>("Arial")
+  const [searchFont, setSearchFont] = useState<string>("")
 
   const handleDarkModeChange = (checked: boolean) => {
     setDark(checked)
@@ -39,9 +57,12 @@ export default function RightSideBar() {
   }
 
   const handleExport = (format: "JSON" | "PDF") => {
-    // Implement export logic here
     console.log(`Exporting as ${format}`)
   }
+
+  const filteredFonts = fonts.filter(font => 
+    font.toLowerCase().includes(searchFont.toLowerCase())
+  )
 
   return (
     <div className="w-80 bg-card border-l border-border flex flex-col hidden md:flex">
@@ -51,24 +72,47 @@ export default function RightSideBar() {
       <ScrollArea className="flex-grow">
         <div className="p-4 space-y-6">
           <div>
-            <Label>Template</Label>
+            <Label htmlFor="template-select">Template</Label>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="w-full justify-between mt-2">
-                  Select a template
+                <Button
+                  id="template-select"
+                  variant="outline"
+                  className="w-full justify-between mt-2"
+                >
+                  {selectedTemplate || "Select a template"}
                   <ChevronRight className="h-4 w-4 opacity-50" />
                 </Button>
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent className="w-full sm:max-w-2xl flex flex-col h-full">
                 <SheetHeader>
                   <SheetTitle>Choose a Template</SheetTitle>
                   <SheetDescription>Select a template for your resume.</SheetDescription>
                 </SheetHeader>
-                <div className="grid gap-4 py-4">
-                  <Button className="justify-start">Modern</Button>
-                  <Button className="justify-start">Classic</Button>
-                  <Button className="justify-start">Minimal</Button>
-                </div>
+                <ScrollArea className="flex-grow mt-4">
+                  <div className="grid grid-cols-2 gap-4 pr-4">
+                    {templates.map((template) => (
+                      <Button
+                        key={template.name}
+                        variant="outline"
+                        className="h-auto p-0 flex flex-col items-stretch hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                        onClick={() => setSelectedTemplate(template.name)}
+                      >
+                        <div className="relative w-full pt-[133%] overflow-hidden rounded-t-md">
+                          <div className="absolute inset-0 bg-gradient-to-br from-zinc-200 to-zinc-300 dark:from-zinc-700 dark:to-zinc-800" />
+                          <img
+                            src={template.image}
+                            alt={`${template.name} template`}
+                            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
+                          />
+                        </div>
+                        <div className="p-2 text-center font-medium">
+                          {template.name}
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </ScrollArea>
               </SheetContent>
             </Sheet>
           </div>
@@ -77,19 +121,44 @@ export default function RightSideBar() {
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" className="w-full justify-between mt-2">
-                  Select a font
+                  <span style={{ fontFamily: selectedFont }}>{selectedFont}</span>
                   <ChevronRight className="h-4 w-4 opacity-50" />
                 </Button>
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent className="w-full sm:max-w-md flex flex-col h-full">
                 <SheetHeader>
                   <SheetTitle>Choose a Font</SheetTitle>
                   <SheetDescription>Select a font family for your resume.</SheetDescription>
                 </SheetHeader>
-                <div className="grid gap-4 py-4">
-                  <Button className="justify-start">Sans-serif</Button>
-                  <Button className="justify-start">Serif</Button>
-                  <Button className="justify-start">Monospace</Button>
+                <div className="flex-grow flex flex-col overflow-hidden">
+                  <div className="relative my-4">
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      placeholder="Search fonts"
+                      value={searchFont}
+                      onChange={(e) => setSearchFont(e.target.value)}
+                      className="pl-8"
+                    />
+                  </div>
+                  <ScrollArea className="flex-grow">
+                    <div className="grid grid-cols-1 gap-2 pr-4">
+                      {filteredFonts.map((font) => (
+                        <Button
+                          key={font}
+                          variant="ghost"
+                          className="w-full justify-start h-16 px-4 hover:bg-accent"
+                          onClick={() => setSelectedFont(font)}
+                        >
+                          <span 
+                            style={{ fontFamily: font }} 
+                            className="text-lg"
+                          >
+                            {font}
+                          </span>
+                        </Button>
+                      ))}
+                    </div>
+                  </ScrollArea>
                 </div>
               </SheetContent>
             </Sheet>
