@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useTheme } from "next-themes"
+import { useState } from "react";
+import { useTheme } from "next-themes";
 import {
   Sheet,
   SheetContent,
@@ -7,23 +7,55 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronRight, ChevronDown, Search } from "lucide-react"
+} from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronRight, ChevronDown, Search } from "lucide-react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 const fonts = [
-  "Arial", "Calibri", "Cambria", "Comfortaa", "Courier New", "EB Garamond", 
-  "Fira Sans", "Georgia", "Helvetica", "Lato", "Lora", "Merriweather", 
-  "Montserrat", "Nunito", "Open Sans", "Oswald", "Playfair Display", "Poppins", 
-  "Roboto", "Roboto Serif", "Source Sans Pro", "Times New Roman", "Ubuntu", "Verdana"
-]
+  "Arial",
+  "Calibri",
+  "Cambria",
+  "Comfortaa",
+  "Courier New",
+  "EB Garamond",
+  "Fira Sans",
+  "Georgia",
+  "Helvetica",
+  "Lato",
+  "Lora",
+  "Merriweather",
+  "Montserrat",
+  "Nunito",
+  "Open Sans",
+  "Oswald",
+  "Playfair Display",
+  "Poppins",
+  "Roboto",
+  "Roboto Serif",
+  "Source Sans Pro",
+  "Times New Roman",
+  "Ubuntu",
+  "Verdana",
+];
 
 const templates = [
   { name: "Professional", image: "/placeholder.svg?height=200&width=150" },
@@ -32,37 +64,72 @@ const templates = [
   { name: "Technical", image: "/placeholder.svg?height=200&width=150" },
   { name: "Academic", image: "/placeholder.svg?height=200&width=150" },
   { name: "Student", image: "/placeholder.svg?height=200&width=150" },
-]
+];
 
-export default function RightSideBar() {
-  const { theme, setTheme } = useTheme()
-  const [dark, setDark] = useState<boolean>(theme === "dark")
-  const [margin, setMargin] = useState<number>(20)
-  const [paperFormat, setPaperFormat] = useState<string>("A4")
-  const [selectedTemplate, setSelectedTemplate] = useState<string>("")
-  const [selectedFont, setSelectedFont] = useState<string>("Arial")
-  const [searchFont, setSearchFont] = useState<string>("")
+export default function RightSideBar({
+  pageFormat,
+  setPageFormat,
+  pages,
+  setPages,
+}) {
+  const { theme, setTheme } = useTheme();
+  const [dark, setDark] = useState<boolean>(theme === "dark");
+  const [margin, setMargin] = useState<number>(20);
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+  const [selectedFont, setSelectedFont] = useState<string>("Arial");
+  const [searchFont, setSearchFont] = useState<string>("");
 
   const handleDarkModeChange = (checked: boolean) => {
-    setDark(checked)
-    setTheme(checked ? "dark" : "light")
-  }
+    setDark(checked);
+    setTheme(checked ? "dark" : "light");
+  };
 
   const handleMarginChange = (value: number[]) => {
-    setMargin(value[0])
-  }
+    setMargin(value[0]);
+  };
 
   const handlePaperFormatChange = (value: string) => {
-    setPaperFormat(value)
-  }
+    setPageFormat(value);
+  };
 
-  const handleExport = (format: "JSON" | "PDF") => {
-    console.log(`Exporting as ${format}`)
-  }
+  const handleExport = async (format: "JSON" | "PDF") => {
+    if (format === "JSON") {
+      const jsonString = JSON.stringify(pages);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "resume.json";
+      link.click();
+    } else if (format === "PDF") {
+      const pdf = new jsPDF({
+        format: pageFormat.toLowerCase(),
+        unit: "mm",
+      });
 
-  const filteredFonts = fonts.filter(font => 
+      for (let i = 0; i < pages.length; i++) {
+        const pageElement = document.getElementById(`page-${pages[i].id}`);
+        const canvas = await html2canvas(pageElement, { scale: 2 });
+        const imgData = canvas.toDataURL("image/png");
+
+        if (i > 0) pdf.addPage();
+        pdf.addImage(
+          imgData,
+          "PNG",
+          0,
+          0,
+          pdf.internal.pageSize.getWidth(),
+          pdf.internal.pageSize.getHeight()
+        );
+      }
+
+      pdf.save("resume.pdf");
+    }
+  };
+
+  const filteredFonts = fonts.filter((font) =>
     font.toLowerCase().includes(searchFont.toLowerCase())
-  )
+  );
 
   return (
     <div className="w-80 bg-card border-l border-border flex flex-col hidden md:flex">
@@ -87,7 +154,9 @@ export default function RightSideBar() {
               <SheetContent className="w-full sm:max-w-2xl flex flex-col h-full">
                 <SheetHeader>
                   <SheetTitle>Choose a Template</SheetTitle>
-                  <SheetDescription>Select a template for your resume.</SheetDescription>
+                  <SheetDescription>
+                    Select a template for your resume.
+                  </SheetDescription>
                 </SheetHeader>
                 <ScrollArea className="flex-grow mt-4">
                   <div className="grid grid-cols-2 gap-4 pr-4">
@@ -120,15 +189,22 @@ export default function RightSideBar() {
             <Label>Font Family</Label>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="w-full justify-between mt-2">
-                  <span style={{ fontFamily: selectedFont }}>{selectedFont}</span>
+                <Button
+                  variant="outline"
+                  className="w-full justify-between mt-2"
+                >
+                  <span style={{ fontFamily: selectedFont }}>
+                    {selectedFont}
+                  </span>
                   <ChevronRight className="h-4 w-4 opacity-50" />
                 </Button>
               </SheetTrigger>
               <SheetContent className="w-full sm:max-w-md flex flex-col h-full">
                 <SheetHeader>
                   <SheetTitle>Choose a Font</SheetTitle>
-                  <SheetDescription>Select a font family for your resume.</SheetDescription>
+                  <SheetDescription>
+                    Select a font family for your resume.
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="flex-grow flex flex-col overflow-hidden">
                   <div className="relative my-4">
@@ -149,8 +225,8 @@ export default function RightSideBar() {
                           className="w-full justify-start h-16 px-4 hover:bg-accent"
                           onClick={() => setSelectedFont(font)}
                         >
-                          <span 
-                            style={{ fontFamily: font }} 
+                          <span
+                            style={{ fontFamily: font }}
                             className="text-lg"
                           >
                             {font}
@@ -165,11 +241,23 @@ export default function RightSideBar() {
           </div>
           <div>
             <Label>Font Size</Label>
-            <Slider defaultValue={[14]} max={24} min={10} step={1} className="mt-2" />
+            <Slider
+              defaultValue={[14]}
+              max={24}
+              min={10}
+              step={1}
+              className="mt-2"
+            />
           </div>
           <div>
             <Label>Line Height</Label>
-            <Slider defaultValue={[1.5]} max={2} min={1} step={0.1} className="mt-2" />
+            <Slider
+              defaultValue={[1.5]}
+              max={2}
+              min={1}
+              step={0.1}
+              className="mt-2"
+            />
           </div>
           <div>
             <Label>Margin (mm)</Label>
@@ -192,7 +280,7 @@ export default function RightSideBar() {
           </div>
           <div>
             <Label>Paper Format</Label>
-            <Select value={paperFormat} onValueChange={handlePaperFormatChange}>
+            <Select value={pageFormat} onValueChange={handlePaperFormatChange}>
               <SelectTrigger className="w-full mt-2">
                 <SelectValue placeholder="Select format" />
               </SelectTrigger>
@@ -206,7 +294,16 @@ export default function RightSideBar() {
           <div>
             <Label>Theme Color</Label>
             <div className="flex flex-wrap gap-2 mt-2">
-              {["bg-blue-500", "bg-green-500", "bg-red-500", "bg-purple-500", "bg-yellow-500", "bg-pink-500", "bg-indigo-500", "bg-teal-500"].map((color) => (
+              {[
+                "bg-blue-500",
+                "bg-green-500",
+                "bg-red-500",
+                "bg-purple-500",
+                "bg-yellow-500",
+                "bg-pink-500",
+                "bg-indigo-500",
+                "bg-teal-500",
+              ].map((color) => (
                 <button
                   key={color}
                   className={`w-8 h-8 rounded-full ${color} border-2 border-background focus:outline-none focus:ring-2 focus:ring-ring`}
@@ -215,7 +312,11 @@ export default function RightSideBar() {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Switch id="dark-mode" checked={dark} onCheckedChange={handleDarkModeChange} />
+            <Switch
+              id="dark-mode"
+              checked={dark}
+              onCheckedChange={handleDarkModeChange}
+            />
             <Label htmlFor="dark-mode">Dark Mode</Label>
           </div>
         </div>
@@ -230,12 +331,22 @@ export default function RightSideBar() {
           </PopoverTrigger>
           <PopoverContent className="w-56 p-2">
             <div className="grid gap-y-4">
-              <div className="w-full cursor-pointer hover:bg-secondary px-2" onClick={() => handleExport("JSON")}>Export as JSON</div>
-              <div className="w-full cursor-pointer hover:bg-secondary px-2" onClick={() => handleExport("PDF")}>Export as PDF</div>
+              <div
+                className="w-full cursor-pointer hover:bg-secondary px-2"
+                onClick={() => handleExport("JSON")}
+              >
+                Export as JSON
+              </div>
+              <div
+                className="w-full cursor-pointer hover:bg-secondary px-2"
+                onClick={() => handleExport("PDF")}
+              >
+                Export as PDF
+              </div>
             </div>
           </PopoverContent>
         </Popover>
       </div>
     </div>
-  )
+  );
 }
