@@ -21,6 +21,7 @@ import SidebarContent from "@/components/SideBar"
 import { Menu, Plus, Trash } from "lucide-react"
 import { userData } from "@/data/UserData"
 import { Education, UserData, Reference, SocialMediaLink, Experience, Project } from "@/types/types"
+import { DatePicker } from "@/components/DatePicker"
 
 
 export default function ProfilePage() {
@@ -332,28 +333,8 @@ export default function ProfilePage() {
                           }
                         />
                         <div className="grid gap-4 md:grid-cols-2">
-                          <Input
-                            type="date"
-                            placeholder="Start Date"
-                            value={project.StartDate}
-                            onChange={(e) =>
-                              handleArrayInputChange("projects", index, {
-                                ...project,
-                                StartDate: e.target.value,
-                              })
-                            }
-                          />
-                          <Input
-                            type="date"
-                            placeholder="End Date"
-                            value={project.EndDate}
-                            onChange={(e) =>
-                              handleArrayInputChange("projects", index, {
-                                ...project,
-                                EndDate: e.target.value,
-                              })
-                            }
-                          />
+                          <DatePicker placeholder={"Pick start date"}  />
+                          <DatePicker placeholder={"Pick a end date"} />
                         </div>
                         <Input
                           placeholder="Project URL"
@@ -406,28 +387,8 @@ export default function ProfilePage() {
                           }
                         />
                         <div className="grid gap-4 md:grid-cols-2">
-                          <Input
-                            type="date"
-                            placeholder="Start Date"
-                            value={exp.StartDate}
-                            onChange={(e) =>
-                              handleArrayInputChange("Experience", index, {
-                                ...exp,
-                                StartDate: e.target.value,
-                              })
-                            }
-                          />
-                          <Input
-                            type="date"
-                            placeholder="End Date"
-                            value={exp.EndDate}
-                            onChange={(e) =>
-                              handleArrayInputChange("Experience", index, {
-                                ...exp,
-                                EndDate: e.target.value,
-                              })
-                            }
-                          />
+                          <DatePicker placeholder={"Pick start date"}  />
+                          <DatePicker placeholder={"Pick a end date"} />
                         </div>
                       </div>
                     ))}

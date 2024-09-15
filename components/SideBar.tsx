@@ -3,13 +3,14 @@ import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Progress } from "@/components/ui/progress"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { FileText, MessageSquare, Star, User, Sun, Moon, Laptop } from "lucide-react"
+import { FileText, MessageSquare, Star, User, Sun, Moon, Laptop, Coins } from "lucide-react"
 
 const sidebarItems = [
   { name: "Resumes", icon: FileText, href: "/home" },
@@ -18,16 +19,24 @@ const sidebarItems = [
   { name: "Profile", icon: User, href: "/profile" },
 ]
 
-export default function SidebarContent() {
+export default function Component() {
   const pathname = usePathname()
   const { setTheme, theme } = useTheme()
+
+  // Example credit data (replace with actual data)
+  const credits = {
+    used: 750,
+    total: 1000
+  }
 
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-14 items-center border-b border-border px-4">
         <Link className="flex items-center gap-2 font-semibold" href="/">
-          <FileText className="h-6 w-6" />
-          <span>Resume Tweaker</span>
+          <span className="sm:block md:text-xl text-zinc-800 dark:text-zinc-200 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 transition-colors duration-200">
+            <span className="text-zinc-500 dark:text-zinc-400">resume</span>
+            <span className="font-bold">tweaker</span>
+          </span>
         </Link>
       </div>
       <ScrollArea className="flex-1">
@@ -52,7 +61,7 @@ export default function SidebarContent() {
           </div>
         </div>
       </ScrollArea>
-      <div className="border-t border-border p-4">
+      <div className="border-t border-border p-4 space-y-4">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-full justify-start">
@@ -77,6 +86,18 @@ export default function SidebarContent() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Coins className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+              <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Credits</span>
+            </div>
+            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              {credits.used}/{credits.total}
+            </span>
+          </div>
+          <Progress value={(credits.used / credits.total) * 100} className="h-2" />
+        </div>
       </div>
     </div>
   )
