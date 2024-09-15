@@ -3,20 +3,11 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-	SheetFooter,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useTheme } from "next-themes";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	ChevronLeft,
 	ChevronRight,
@@ -34,6 +25,8 @@ import {
 	Smile,
 	Star,
 	Trash2,
+	Globe,
+	Book,
 } from "lucide-react";
 
 interface LeftSideBarProps {
@@ -43,16 +36,17 @@ interface LeftSideBarProps {
 
 interface Entry {
 	id: string;
-	[key: string]: string;
+	[key: string]: string | string[];
 }
 
 interface ResumeSection {
 	id: string;
 	icon: JSX.Element;
 	title: string;
+	fields: string[];
 }
 
-export function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProps) {
+export default function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProps) {
 	const [isCollapsed, setIsCollapsed] = useState(false);
 	const [sidebarWidth, setSidebarWidth] = useState(320);
 	const sidebarRef = useRef<HTMLDivElement>(null);
@@ -61,19 +55,80 @@ export function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProp
 	const { theme } = useTheme();
 
 	const resumeSections: ResumeSection[] = [
-		{ id: "basics", icon: <UserPlus className="w-4 h-4" />, title: "Basics" },
-		{ id: "profiles", icon: <Settings className="w-4 h-4" />, title: "Profiles" },
-		{ id: "experience", icon: <Briefcase className="w-4 h-4" />, title: "Experience" },
-		{ id: "education", icon: <GraduationCap className="w-4 h-4" />, title: "Education" },
-		{ id: "skills", icon: <Code className="w-4 h-4" />, title: "Skills" },
-		{ id: "languages", icon: <Languages className="w-4 h-4" />, title: "Languages" },
-		{ id: "projects", icon: <FileText className="w-4 h-4" />, title: "Projects" },
-		{ id: "publications", icon: <Award className="w-4 h-4" />, title: "Publications" },
-		{ id: "awards", icon: <Trophy className="w-4 h-4" />, title: "Awards" },
-		{ id: "volunteer", icon: <Heart className="w-4 h-4" />, title: "Volunteering" },
-		{ id: "interests", icon: <Smile className="w-4 h-4" />, title: "Interests" },
-		{ id: "references", icon: <Star className="w-4 h-4" />, title: "References" },
-		{ id: "certifications", icon: <FileText className="w-4 h-4" />, title: "Certifications" },
+		{
+			id: "basics",
+			icon: <UserPlus className="w-4 h-4" />,
+			title: "Basics",
+			fields: ["url", "name", "email", "phone", "picture", "headline", "location"],
+		},
+		{
+			id: "awards",
+			icon: <Trophy className="w-4 h-4" />,
+			title: "Awards",
+			fields: ["title", "awarder", "date", "summary", "url"],
+		},
+		{
+			id: "skills",
+			icon: <Code className="w-4 h-4" />,
+			title: "Skills",
+			fields: ["name", "level", "keywords", "description"],
+		},
+		{ id: "summary", icon: <FileText className="w-4 h-4" />, title: "Summary", fields: ["content"] },
+		{
+			id: "profiles",
+			icon: <Settings className="w-4 h-4" />,
+			title: "Profiles",
+			fields: ["url", "icon", "network", "username"],
+		},
+		{
+			id: "projects",
+			icon: <FileText className="w-4 h-4" />,
+			title: "Projects",
+			fields: ["url", "date", "name", "summary", "keywords", "description"],
+		},
+		{
+			id: "education",
+			icon: <GraduationCap className="w-4 h-4" />,
+			title: "Education",
+			fields: ["url", "area", "date", "score", "summary", "studyType", "institution"],
+		},
+		{ id: "interests", icon: <Smile className="w-4 h-4" />, title: "Interests", fields: ["name", "keywords"] },
+		{
+			id: "languages",
+			icon: <Languages className="w-4 h-4" />,
+			title: "Languages",
+			fields: ["name", "description", "level"],
+		},
+		{
+			id: "volunteer",
+			icon: <Heart className="w-4 h-4" />,
+			title: "Volunteering",
+			fields: ["organization", "position", "location", "date", "url"],
+		},
+		{
+			id: "experience",
+			icon: <Briefcase className="w-4 h-4" />,
+			title: "Experience",
+			fields: ["url", "date", "company", "summary", "location", "position"],
+		},
+		{
+			id: "references",
+			icon: <Star className="w-4 h-4" />,
+			title: "References",
+			fields: ["name", "description", "summary", "url"],
+		},
+		{
+			id: "publications",
+			icon: <Book className="w-4 h-4" />,
+			title: "Publications",
+			fields: ["name", "publisher", "date", "summary", "url"],
+		},
+		{
+			id: "certifications",
+			icon: <Award className="w-4 h-4" />,
+			title: "Certifications",
+			fields: ["url", "date", "name", "issuer", "summary"],
+		},
 	];
 
 	useEffect(() => {
@@ -100,13 +155,17 @@ export function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProp
 
 	const addEntry = (section: string) => {
 		const newEntry: Entry = { id: Date.now().toString() };
+		const sectionFields = resumeSections.find((s) => s.id === section)?.fields || [];
+		sectionFields.forEach((field) => {
+			newEntry[field] = field === "keywords" ? [] : "";
+		});
 		setResumeData((prev) => ({
 			...prev,
 			[section]: [...(prev[section] || []), newEntry],
 		}));
 	};
 
-	const updateEntry = (section: string, id: string, field: string, value: string) => {
+	const updateEntry = (section: string, id: string, field: string, value: string | string[]) => {
 		setResumeData((prev) => ({
 			...prev,
 			[section]: prev[section].map((entry) => (entry.id === id ? { ...entry, [field]: value } : entry)),
@@ -120,31 +179,44 @@ export function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProp
 		}));
 	};
 
-	const renderEntryFields = (section: string, entry: Entry) => {
-		const fields = getFieldsForSection(section);
+	const renderEntryFields = (section: string, entry: Entry, index: number) => {
+		const fields = resumeSections.find((s) => s.id === section)?.fields || [];
 		return (
-			<Card key={entry.id} className="mb-4">
-				<CardHeader>
-					<CardTitle>{section.charAt(0).toUpperCase() + section.slice(1)} Entry</CardTitle>
-					<CardDescription>Add details for this entry</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-4">
+			<div key={entry.id} className="mb-8">
+				<h3 className="text-lg font-semibold mb-4">
+					{section.charAt(0).toUpperCase() + section.slice(1)} {index + 1}
+				</h3>
+				<div className="space-y-4">
 					{fields.map((field) => (
 						<div key={field}>
 							<Label htmlFor={`${field}-${entry.id}`}>
 								{field.charAt(0).toUpperCase() + field.slice(1)}
 							</Label>
-							{field === "description" ? (
+							{field === "summary" || field === "content" ? (
 								<Textarea
 									id={`${field}-${entry.id}`}
-									value={entry[field] || ""}
+									value={(entry[field] as string) || ""}
 									onChange={(e) => updateEntry(section, entry.id, field, e.target.value)}
 									placeholder={`Enter ${field}`}
+								/>
+							) : field === "keywords" ? (
+								<Input
+									id={`${field}-${entry.id}`}
+									value={(entry[field] as string[]).join(", ")}
+									onChange={(e) =>
+										updateEntry(
+											section,
+											entry.id,
+											field,
+											e.target.value.split(",").map((item) => item.trim())
+										)
+									}
+									placeholder={`Enter ${field} (comma-separated)`}
 								/>
 							) : (
 								<Input
 									id={`${field}-${entry.id}`}
-									value={entry[field] || ""}
+									value={(entry[field] as string) || ""}
 									onChange={(e) => updateEntry(section, entry.id, field, e.target.value)}
 									placeholder={`Enter ${field}`}
 								/>
@@ -154,22 +226,9 @@ export function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProp
 					<Button variant="destructive" size="sm" onClick={() => deleteEntry(section, entry.id)}>
 						<Trash2 className="w-4 h-4 mr-2" /> Delete
 					</Button>
-				</CardContent>
-			</Card>
+				</div>
+			</div>
 		);
-	};
-
-	const getFieldsForSection = (section: string): string[] => {
-		switch (section) {
-			case "basics":
-				return ["name", "email", "phone"];
-			case "skills":
-			case "languages":
-			case "interests":
-				return ["name", "level"];
-			default:
-				return ["title", "description"];
-		}
 	};
 
 	const renderSheetContent = (section: string) => {
@@ -177,8 +236,8 @@ export function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProp
 
 		return (
 			<div className="flex flex-col h-full">
-				<ScrollArea className="flex-grow pr-4">
-					{sectionEntries.map((entry) => renderEntryFields(section, entry))}
+				<ScrollArea className="flex-grow pr-4 my-8">
+					{sectionEntries.map((entry, index) => renderEntryFields(section, entry, index))}
 					{sectionEntries.length === 0 && (
 						<p className="text-center text-muted-foreground">No entries yet. Add some!</p>
 					)}

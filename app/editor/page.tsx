@@ -28,7 +28,7 @@ import {
   FileDown,
   Move,
 } from "lucide-react";
-import { LeftSideBar } from "@/components/EditorLeftSideBar";
+import  LeftSideBar  from "@/components/EditorLeftSideBar";
 import RightSideBar from "@/components/EditorRightSideBar";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
