@@ -2,7 +2,6 @@ import { LandingNav } from "@/components/LandingNav";
 import { Hero } from "@/components/Hero";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { useSelector } from "react-redux";
 
 export const metadata: Metadata = {
   title: "Wibblit Resume Tweaker",
@@ -11,11 +10,6 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-
-  const val = useSelector((state) => state?.leftsidebar)
-
-  
-
   return (
     <main className="relative flex justify-center items-center flex-col overflow-hidden mx-auto">
         <div className="max-w-7xl w-full">
