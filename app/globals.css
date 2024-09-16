@@ -5,6 +5,8 @@
 
 @layer base {
   :root {
+    --grad-foreground: #000000;
+    --grad-background: #ffffff;
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -33,6 +35,8 @@
   }
 
   .dark {
+     --grad-foreground: #ffffff;
+     --grad-background: #000000;
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
