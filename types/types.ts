@@ -209,13 +209,6 @@ export type ResumeStyles = Template & {
   baseColor: string;
 }
 
-
-// //final data
-// export type Resume = {
-//   resumeSections: ResumeData;
-//   styleOptions: ResumeStyles;
-// }
-
 export interface URL {
   href: string;
   label: string;
