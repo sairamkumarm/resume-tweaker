@@ -19,15 +19,40 @@ const rightsidebarSlice = createSlice({
   name: "rightsidebar",
   initialState,
   reducers: {
-    // Example reducer
-    setName(state: ResumeStyles, action: PayloadAction<string>) {
+    UpdateName(state, action) {
       state.name = action.payload;
+    },
+    UpdateFont(state, action) {
+      state.font = action.payload;
+    },
+    UpdateFontSize(state, action) {
+      state.fontSize = action.payload;
+    },
+    UpdateLineHeight(state, action) {
+      state.lineHeight = action.payload;
+    },
+    UpdateMargin(state, action) {
+      state.margin = action.payload;
+    },
+    UpdatePaperFormat(state, action) {
+      state.paperFormat = action.payload;
+    },
+    UpdateBaseColor(state, action) {
+      state.baseColor = action.payload;
     },
   },
 });
 
 // Export the actions
-export const { setName } = rightsidebarSlice.actions;
+export const {
+  UpdateBaseColor,
+  UpdateFont,
+  UpdateFontSize,
+  UpdateLineHeight,
+  UpdateMargin,
+  UpdateName,
+  UpdatePaperFormat,
+} = rightsidebarSlice.actions;
 
 // Export the reducer
 export default rightsidebarSlice.reducer;

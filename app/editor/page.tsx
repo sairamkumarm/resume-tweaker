@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { useAppSelector } from "@/hooks/hooks"; 
 import {
   Select,
   SelectContent,
@@ -69,6 +70,12 @@ export default function ResumeBuilder() {
 
   const resumeContainerRef = useRef<HTMLDivElement>(null);
   const resumePagesRef = useRef<HTMLDivElement>(null);
+
+  const ResumeData = useAppSelector((state) => state.leftsidebar)
+  
+  console.log(ResumeData.summary);
+  
+  
 
   useEffect(() => {
     const newHistory = [...history.slice(0, historyIndex + 1), pages];
@@ -282,11 +289,7 @@ export default function ResumeBuilder() {
         </div>
       </div>
 
-      <AnimatePresence>
-        {rightSidebarOpen && (
-          <RightSideBar />
-        )}
-      </AnimatePresence>
+      <AnimatePresence>{rightSidebarOpen && <RightSideBar />}</AnimatePresence>
     </div>
   );
 }

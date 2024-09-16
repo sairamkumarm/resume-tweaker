@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useTheme } from "next-themes"
+import { useState } from "react";
+import { useTheme } from "next-themes";
 import {
   Sheet,
   SheetContent,
@@ -7,23 +7,64 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Slider } from "@/components/ui/slider"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronRight, ChevronDown, Search } from "lucide-react"
+} from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronRight, ChevronDown, Search } from "lucide-react";
+
+import {
+  UpdateBaseColor,
+  UpdateFont,
+  UpdateFontSize,
+  UpdateLineHeight,
+  UpdateMargin,
+  UpdateName,
+  UpdatePaperFormat,
+} from "@/slices/rightsidebarSlice";
+import { useAppDispatch } from "@/hooks/hooks";
 
 const fonts = [
-  "Arial", "Calibri", "Cambria", "Comfortaa", "Courier New", "EB Garamond", 
-  "Fira Sans", "Georgia", "Helvetica", "Lato", "Lora", "Merriweather", 
-  "Montserrat", "Nunito", "Open Sans", "Oswald", "Playfair Display", "Poppins", 
-  "Roboto", "Roboto Serif", "Source Sans Pro", "Times New Roman", "Ubuntu", "Verdana"
-]
+  "Arial",
+  "Calibri",
+  "Cambria",
+  "Comfortaa",
+  "Courier New",
+  "EB Garamond",
+  "Fira Sans",
+  "Georgia",
+  "Helvetica",
+  "Lato",
+  "Lora",
+  "Merriweather",
+  "Montserrat",
+  "Nunito",
+  "Open Sans",
+  "Oswald",
+  "Playfair Display",
+  "Poppins",
+  "Roboto",
+  "Roboto Serif",
+  "Source Sans Pro",
+  "Times New Roman",
+  "Ubuntu",
+  "Verdana",
+];
 
 const templates = [
   { name: "Professional", image: "/placeholder.svg?height=200&width=150" },
@@ -32,37 +73,48 @@ const templates = [
   { name: "Technical", image: "/placeholder.svg?height=200&width=150" },
   { name: "Academic", image: "/placeholder.svg?height=200&width=150" },
   { name: "Student", image: "/placeholder.svg?height=200&width=150" },
-]
+];
 
 export default function RightSideBar() {
-  const { theme, setTheme } = useTheme()
-  const [dark, setDark] = useState<boolean>(theme === "dark")
-  const [margin, setMargin] = useState<number>(20)
-  const [paperFormat, setPaperFormat] = useState<string>("A4")
-  const [selectedTemplate, setSelectedTemplate] = useState<string>("")
-  const [selectedFont, setSelectedFont] = useState<string>("Arial")
-  const [searchFont, setSearchFont] = useState<string>("")
+  const { theme, setTheme } = useTheme();
+  const [dark, setDark] = useState<boolean>(theme === "dark");
+  const [margin, setMargin] = useState<number>(20);
+  const [paperFormat, setPaperFormat] = useState<string>("A4");
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
+  const [selectedFont, setSelectedFont] = useState<string>("Arial");
+  const [searchFont, setSearchFont] = useState<string>("");
+
+  const dispatch = useAppDispatch();
 
   const handleDarkModeChange = (checked: boolean) => {
-    setDark(checked)
-    setTheme(checked ? "dark" : "light")
-  }
+    setDark(checked);
+    setTheme(checked ? "dark" : "light");
+  };
 
   const handleMarginChange = (value: number[]) => {
-    setMargin(value[0])
-  }
+    setMargin(value[0]);
+    dispatch(UpdateMargin(value[0]));
+  };
+
+   const handleLineHeightChange = (value: number[]) => {
+     dispatch(UpdateLineHeight(value[0]));
+   };
+   const handleFontSizeChange = (value: number[]) => {
+     dispatch(UpdateFontSize(value[0]));
+   };
 
   const handlePaperFormatChange = (value: string) => {
-    setPaperFormat(value)
-  }
+    setPaperFormat(value);
+    dispatch(UpdatePaperFormat(value));
+  };
 
   const handleExport = (format: "JSON" | "PDF") => {
-    console.log(`Exporting as ${format}`)
-  }
+    console.log(`Exporting as ${format}`);
+  };
 
-  const filteredFonts = fonts.filter(font => 
+  const filteredFonts = fonts.filter((font) =>
     font.toLowerCase().includes(searchFont.toLowerCase())
-  )
+  );
 
   return (
     <div className="w-80 bg-card border-l border-border flex flex-col  md:flex">
@@ -87,7 +139,9 @@ export default function RightSideBar() {
               <SheetContent className="w-full sm:max-w-2xl flex flex-col h-full">
                 <SheetHeader>
                   <SheetTitle>Choose a Template</SheetTitle>
-                  <SheetDescription>Select a template for your resume.</SheetDescription>
+                  <SheetDescription>
+                    Select a template for your resume.
+                  </SheetDescription>
                 </SheetHeader>
                 <ScrollArea className="flex-grow mt-4">
                   <div className="grid grid-cols-2 gap-4 pr-4">
@@ -120,15 +174,22 @@ export default function RightSideBar() {
             <Label>Font Family</Label>
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="w-full justify-between mt-2">
-                  <span style={{ fontFamily: selectedFont }}>{selectedFont}</span>
+                <Button
+                  variant="outline"
+                  className="w-full justify-between mt-2"
+                >
+                  <span style={{ fontFamily: selectedFont }}>
+                    {selectedFont}
+                  </span>
                   <ChevronRight className="h-4 w-4 opacity-50" />
                 </Button>
               </SheetTrigger>
               <SheetContent className="w-full sm:max-w-md flex flex-col h-full">
                 <SheetHeader>
                   <SheetTitle>Choose a Font</SheetTitle>
-                  <SheetDescription>Select a font family for your resume.</SheetDescription>
+                  <SheetDescription>
+                    Select a font family for your resume.
+                  </SheetDescription>
                 </SheetHeader>
                 <div className="flex-grow flex flex-col overflow-hidden">
                   <div className="relative my-4">
@@ -147,10 +208,13 @@ export default function RightSideBar() {
                           key={font}
                           variant="ghost"
                           className="w-full justify-start h-16 px-4 hover:bg-accent"
-                          onClick={() => setSelectedFont(font)}
+                          onClick={() => {
+                            setSelectedFont(font);
+                            dispatch(UpdateFont(font));
+                          }}
                         >
-                          <span 
-                            style={{ fontFamily: font }} 
+                          <span
+                            style={{ fontFamily: font }}
                             className="text-lg"
                           >
                             {font}
@@ -165,11 +229,25 @@ export default function RightSideBar() {
           </div>
           <div>
             <Label>Font Size</Label>
-            <Slider defaultValue={[14]} max={24} min={10} step={1} className="mt-2" />
+            <Slider
+              defaultValue={[14]}
+              max={24}
+              min={10}
+              step={1}
+              className="mt-2"
+              onValueChange={handleFontSizeChange}
+            />
           </div>
           <div>
             <Label>Line Height</Label>
-            <Slider defaultValue={[1.5]} max={2} min={1} step={0.1} className="mt-2" />
+            <Slider
+              defaultValue={[1.5]}
+              max={2}
+              min={1}
+              step={0.1}
+              className="mt-2"
+              onValueChange={handleLineHeightChange}
+            />
           </div>
           <div>
             <Label>Margin (mm)</Label>
@@ -177,8 +255,8 @@ export default function RightSideBar() {
               <Slider
                 value={[margin]}
                 onValueChange={handleMarginChange}
-                max={50}
-                min={0}
+                max={30}
+                min={5}
                 step={1}
                 className="flex-grow"
               />
@@ -206,16 +284,31 @@ export default function RightSideBar() {
           <div>
             <Label>Theme Color</Label>
             <div className="flex flex-wrap gap-2 mt-2">
-              {["bg-blue-500", "bg-green-500", "bg-red-500", "bg-purple-500", "bg-yellow-500", "bg-pink-500", "bg-indigo-500", "bg-teal-500"].map((color) => (
+              {[
+                "#3b82f6",
+                "#22c55e",
+                "#ef4444",
+                "#a855f7",
+                "#eab308",
+                "#ec4899 ",
+                "#6366f1",
+                "#14b8a6",
+              ].map((color) => (
                 <button
                   key={color}
-                  className={`w-8 h-8 rounded-full ${color} border-2 border-background focus:outline-none focus:ring-2 focus:ring-ring`}
+                  className={`w-8 h-8 rounded-full border-2 border-background focus:outline-none focus:ring-2 focus:ring-ring`}
+                  onClick={() => dispatch(UpdateBaseColor(color))}
+                  style={{ backgroundColor: color }}
                 />
               ))}
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Switch id="dark-mode" checked={dark} onCheckedChange={handleDarkModeChange} />
+            <Switch
+              id="dark-mode"
+              checked={dark}
+              onCheckedChange={handleDarkModeChange}
+            />
             <Label htmlFor="dark-mode">Dark Mode</Label>
           </div>
         </div>
@@ -230,12 +323,22 @@ export default function RightSideBar() {
           </PopoverTrigger>
           <PopoverContent className="w-56 p-2">
             <div className="grid gap-y-4">
-              <div className="w-full cursor-pointer hover:bg-secondary px-2" onClick={() => handleExport("JSON")}>Export as JSON</div>
-              <div className="w-full cursor-pointer hover:bg-secondary px-2" onClick={() => handleExport("PDF")}>Export as PDF</div>
+              <div
+                className="w-full cursor-pointer hover:bg-secondary px-2"
+                onClick={() => handleExport("JSON")}
+              >
+                Export as JSON
+              </div>
+              <div
+                className="w-full cursor-pointer hover:bg-secondary px-2"
+                onClick={() => handleExport("PDF")}
+              >
+                Export as PDF
+              </div>
             </div>
           </PopoverContent>
         </Popover>
       </div>
     </div>
-  )
+  );
 }

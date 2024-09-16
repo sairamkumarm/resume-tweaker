@@ -1,13 +1,26 @@
-'use client'
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useTheme } from "next-themes";
 import {
   ChevronLeft,
@@ -33,6 +46,9 @@ interface LeftSideBarProps {
   setActiveSection: React.Dispatch<React.SetStateAction<string>>;
 }
 
+import { useAppDispatch } from "@/hooks/hooks";
+import { UpdateLeftBarData } from "@/slices/leftsidebarSlice";
+
 type URL = {
   href: string;
   label: string;
@@ -40,7 +56,7 @@ type URL = {
 
 type Skill = {
   name: string;
-  level?: 1 | 2 | 3 | 4 | 5 | "Beginner" | "Intermediate" | "Advanced";
+  level?: "Beginner" | "Intermediate" | "Advanced" | string;
 };
 
 type SkillCategory = {
@@ -61,7 +77,10 @@ interface ResumeSection {
   fields: string[];
 }
 
-export default function LeftSideBar({ activeSection, setActiveSection }: LeftSideBarProps) {
+export default function LeftSideBar({
+  activeSection,
+  setActiveSection,
+}: LeftSideBarProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(320);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -69,14 +88,35 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
   const [resumeData, setResumeData] = useState<Record<string, Entry[]>>({});
   const { theme } = useTheme();
 
+  console.log(resumeData);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(UpdateLeftBarData(resumeData));
+  }, [resumeData, dispatch]);
+
   const resumeSections: ResumeSection[] = [
     {
       id: "basics",
       icon: <UserPlus className="w-4 h-4" />,
       title: "Basics",
-      fields: ["url", "name", "email", "phone", "location", "headLine", "picture"],
+      fields: [
+        "url",
+        "name",
+        "email",
+        "phone",
+        "location",
+        "headLine",
+        "picture",
+      ],
     },
-    { id: "summary", icon: <FileText className="w-4 h-4" />, title: "Summary", fields: ["content"] },
+    {
+      id: "summary",
+      icon: <FileText className="w-4 h-4" />,
+      title: "Summary",
+      fields: ["content"],
+    },
     {
       id: "profiles",
       icon: <Settings className="w-4 h-4" />,
@@ -99,13 +139,28 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
       id: "education",
       icon: <GraduationCap className="w-4 h-4" />,
       title: "Education",
-      fields: ["institution", "degree", "field", "specialization", "startDate", "endDate", "score"],
+      fields: [
+        "institution",
+        "degree",
+        "field",
+        "specialization",
+        "startDate",
+        "endDate",
+        "score",
+      ],
     },
     {
       id: "experience",
       icon: <Briefcase className="w-4 h-4" />,
       title: "Experience",
-      fields: ["organization", "role", "startDate", "endDate", "location", "summary"],
+      fields: [
+        "organization",
+        "role",
+        "startDate",
+        "endDate",
+        "location",
+        "summary",
+      ],
     },
     {
       id: "languages",
@@ -169,7 +224,8 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
 
   const addEntry = (section: string) => {
     const newEntry: Entry = { id: Date.now().toString() };
-    const sectionFields = resumeSections.find((s) => s.id === section)?.fields || [];
+    const sectionFields =
+      resumeSections.find((s) => s.id === section)?.fields || [];
     sectionFields.forEach((field) => {
       if (field === "url") {
         newEntry[field] = { href: "", label: "" };
@@ -185,10 +241,17 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
     }));
   };
 
-  const updateEntry = (section: string, id: string, field: string, value: any) => {
+  const updateEntry = (
+    section: string,
+    id: string,
+    field: string,
+    value: any
+  ) => {
     setResumeData((prev) => ({
       ...prev,
-      [section]: prev[section].map((entry) => (entry.id === id ? { ...entry, [field]: value } : entry)),
+      [section]: prev[section].map((entry) =>
+        entry.id === id ? { ...entry, [field]: value } : entry
+      ),
     }));
   };
 
@@ -204,7 +267,7 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
       ...prev,
       skills: prev.skills.map((entry) => {
         if (entry.id === entryId) {
-          const categories = entry.categories as SkillCategory[] || [];
+          const categories = (entry.categories as SkillCategory[]) || [];
           return {
             ...entry,
             categories: [
@@ -223,10 +286,12 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
       ...prev,
       skills: prev.skills.map((entry) => {
         if (entry.id === entryId) {
-          const categories = entry.categories as SkillCategory[] || [];
+          const categories = (entry.categories as SkillCategory[]) || [];
           return {
             ...entry,
-            categories: categories.filter((category) => category.id !== categoryId),
+            categories: categories.filter(
+              (category) => category.id !== categoryId
+            ),
           };
         }
         return entry;
@@ -239,7 +304,7 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
       ...prev,
       skills: prev.skills.map((entry) => {
         if (entry.id === entryId) {
-          const categories = entry.categories as SkillCategory[] || [];
+          const categories = (entry.categories as SkillCategory[]) || [];
           return {
             ...entry,
             categories: categories.map((category) => {
@@ -258,19 +323,25 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
     }));
   };
 
-  const deleteSkill = (entryId: string, categoryId: string, skillIndex: number) => {
+  const deleteSkill = (
+    entryId: string,
+    categoryId: string,
+    skillIndex: number
+  ) => {
     setResumeData((prev) => ({
       ...prev,
       skills: prev.skills.map((entry) => {
         if (entry.id === entryId) {
-          const categories = entry.categories as SkillCategory[] || [];
+          const categories = (entry.categories as SkillCategory[]) || [];
           return {
             ...entry,
             categories: categories.map((category) => {
               if (category.id === categoryId) {
                 return {
                   ...category,
-                  skills: category.skills.filter((_, index) => index !== skillIndex),
+                  skills: category.skills.filter(
+                    (_, index) => index !== skillIndex
+                  ),
                 };
               }
               return category;
@@ -299,7 +370,9 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
                 <Textarea
                   id={`${field}-${entry.id}`}
                   value={(entry[field] as string) || ""}
-                  onChange={(e) => updateEntry(section, entry.id, field, e.target.value)}
+                  onChange={(e) =>
+                    updateEntry(section, entry.id, field, e.target.value)
+                  }
                   placeholder={`Enter ${field}`}
                 />
               ) : field === "keywords" ? (
@@ -321,14 +394,24 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
                   <Input
                     id={`${field}-href-${entry.id}`}
                     value={(entry[field] as URL)?.href || ""}
-                    onChange={(e) => updateEntry(section, entry.id, field, { ...(entry[field] as URL), href: e.target.value })}
+                    onChange={(e) =>
+                      updateEntry(section, entry.id, field, {
+                        ...(entry[field] as URL),
+                        href: e.target.value,
+                      })
+                    }
                     placeholder="Enter URL"
                     type="url"
                   />
                   <Input
                     id={`${field}-label-${entry.id}`}
                     value={(entry[field] as URL)?.label || ""}
-                    onChange={(e) => updateEntry(section, entry.id, field, { ...(entry[field] as URL), label: e.target.value })}
+                    onChange={(e) =>
+                      updateEntry(section, entry.id, field, {
+                        ...(entry[field] as URL),
+                        label: e.target.value,
+                      })
+                    }
                     placeholder="Enter label"
                   />
                 </div>
@@ -344,25 +427,31 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
                   type="file"
                   accept="image/*"
                 />
-              ) : field === "startDate" || field === "endDate" || field === "date" ? (
+              ) : field === "startDate" ||
+                field === "endDate" ||
+                field === "date" ? (
                 <Input
                   id={`${field}-${entry.id}`}
                   value={(entry[field] as string) || ""}
-                  onChange={(e) => updateEntry(section, entry.id, field, e.target.value)}
+                  onChange={(e) =>
+                    updateEntry(section, entry.id, field, e.target.value)
+                  }
                   placeholder={`Enter ${field} (YYYY-MM)`}
                   type="month"
                 />
               ) : field === "level" ? (
                 <Select
-                  onValueChange={(value) => updateEntry(section, entry.id, field, value)}
+                  onValueChange={(value) =>
+                    updateEntry(section, entry.id, field, value)
+                  }
                   defaultValue={(entry[field] as string) || undefined}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select level" />
                   </SelectTrigger>
                   <SelectContent>
-                    {[1, 2, 3, 4, 5, "Beginner", "Intermediate", "Advanced"].map((level) => (
-                      <SelectItem key={level.toString()} value={level.toString()}>
+                    {["Beginner", "Intermediate", "Advanced"].map((level) => (
+                      <SelectItem key={level} value={level}>
                         {level}
                       </SelectItem>
                     ))}
@@ -370,75 +459,140 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
                 </Select>
               ) : field === "categories" && section === "skills" ? (
                 <div className="space-y-4">
-                  {((entry[field] as SkillCategory[]) || []).map((category, categoryIndex) => (
-                    <div key={category.id} className="border p-4 rounded-md">
-                      <Input
-                        value={category.name}
-                        onChange={(e) => {
-                          const updatedCategories = [...(entry[field] as SkillCategory[])];
-                          updatedCategories[categoryIndex].name = e.target.value;
-                          updateEntry(section, entry.id, field, updatedCategories);
-                        }}
-                        placeholder="Category name"
-                        className="mb-2"
-                      />
-                      {category.skills.map((skill, skillIndex) => (
-                        <div key={skillIndex} className="flex items-center space-x-2 mb-2">
-                          <Input
-                            value={skill.name}
-                            onChange={(e) => {
-                              const updatedCategories = [...(entry[field] as SkillCategory[])];
-                              updatedCategories[categoryIndex].skills[skillIndex].name = e.target.value;
-                              updateEntry(section, entry.id, field, updatedCategories);
-                            }}
-                            placeholder="Skill name"
-                          />
-                          <Select
-                            onValueChange={(value) => {
-                              const updatedCategories = [...(entry[field] as SkillCategory[])];
-                              updatedCategories[categoryIndex].skills[skillIndex].level = value as Skill['level'];
-                              updateEntry(section, entry.id, field, updatedCategories);
-                            }}
-                            defaultValue={skill.level?.toString()}
+                  {((entry[field] as SkillCategory[]) || []).map(
+                    (category, categoryIndex) => (
+                      <div key={category.id} className="border p-4 rounded-md">
+                        <Input
+                          value={category.name}
+                          onChange={(e) => {
+                            const updatedCategories = [
+                              ...(entry[field] as SkillCategory[]),
+                            ];
+                            updatedCategories[categoryIndex] = {
+                              ...updatedCategories[categoryIndex],
+                              name: e.target.value,
+                            };
+                            updateEntry(
+                              section,
+                              entry.id,
+                              field,
+                              updatedCategories
+                            );
+                          }}
+                          placeholder="Category name"
+                          className="mb-2"
+                        />
+                        {category.skills.map((skill, skillIndex) => (
+                          <div
+                            key={skillIndex}
+                            className="flex items-center space-x-2 mb-2"
                           >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select level" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {[1, 2, 3, 4, 5, "Beginner", "Intermediate", "Advanced"].map((level) => (
-                                <SelectItem key={level.toString()} value={level.toString()}>
-                                  {level}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => deleteSkill(entry.id, category.id, skillIndex)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      ))}
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => addSkill(entry.id, category.id)}
-                        className="mr-2"
-                      >
-                        Add Skill
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => deleteSkillCategory(entry.id, category.id)}
-                      >
-                        Delete Category
-                      </Button>
-                    </div>
-                  ))}
-                  <Button variant="outline" onClick={() => addSkillCategory(entry.id)}>
+                            <Input
+                              value={skill.name}
+                              onChange={(e) => {
+                                const updatedCategories = [
+                                  ...(entry[field] as SkillCategory[]),
+                                ];
+                                const updatedSkills = [
+                                  ...updatedCategories[categoryIndex].skills,
+                                ];
+                                updatedSkills[skillIndex] = {
+                                  ...updatedSkills[skillIndex],
+                                  name: e.target.value,
+                                };
+                                updatedCategories[categoryIndex] = {
+                                  ...updatedCategories[categoryIndex],
+                                  skills: updatedSkills,
+                                };
+                                updateEntry(
+                                  section,
+                                  entry.id,
+                                  field,
+                                  updatedCategories
+                                );
+                              }}
+                              placeholder="Skill name"
+                            />
+                            <Select
+                              onValueChange={(value) => {
+                                const updatedCategories = [
+                                  ...(entry[field] as SkillCategory[]),
+                                ];
+                                const updatedSkills = [
+                                  ...updatedCategories[categoryIndex].skills,
+                                ];
+                                updatedSkills[skillIndex] = {
+                                  ...updatedSkills[skillIndex],
+                                  level: value,
+                                };
+                                updatedCategories[categoryIndex] = {
+                                  ...updatedCategories[categoryIndex],
+                                  skills: updatedSkills,
+                                };
+                                updateEntry(
+                                  section,
+                                  entry.id,
+                                  field,
+                                  updatedCategories
+                                );
+                              }}
+                              defaultValue={skill.level}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select level" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {[
+                                  "1",
+                                  "2",
+                                  "3",
+                                  "4",
+                                  "5",
+                                  "Beginner",
+                                  "Intermediate",
+                                  "Advanced",
+                                ].map((level) => (
+                                  <SelectItem key={level} value={level}>
+                                    {level}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() =>
+                                deleteSkill(entry.id, category.id, skillIndex)
+                              }
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        ))}
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => addSkill(entry.id, category.id)}
+                          className="mr-2"
+                        >
+                          Add Skill
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() =>
+                            deleteSkillCategory(entry.id, category.id)
+                          }
+                        >
+                          Delete Category
+                        </Button>
+                      </div>
+                    )
+                  )}
+                  <Button
+                    variant="outline"
+                    onClick={() => addSkillCategory(entry.id)}
+                  >
                     Add Category
                   </Button>
                 </div>
@@ -446,13 +600,19 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
                 <Input
                   id={`${field}-${entry.id}`}
                   value={(entry[field] as string) || ""}
-                  onChange={(e) => updateEntry(section, entry.id, field, e.target.value)}
+                  onChange={(e) =>
+                    updateEntry(section, entry.id, field, e.target.value)
+                  }
                   placeholder={`Enter ${field}`}
                 />
               )}
             </div>
           ))}
-          <Button variant="destructive" size="sm" onClick={() => deleteEntry(section, entry.id)}>
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={() => deleteEntry(section, entry.id)}
+          >
             <Trash2 className="w-4 h-4 mr-2" /> Delete
           </Button>
         </div>
@@ -466,16 +626,24 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
     return (
       <div className="flex flex-col h-full">
         <ScrollArea className="flex-grow pr-4 my-8">
-          {sectionEntries.map((entry, index) => renderEntryFields(section, entry, index))}
+          {sectionEntries.map((entry, index) =>
+            renderEntryFields(section, entry, index)
+          )}
           {sectionEntries.length === 0 && (
-            <p className="text-center text-muted-foreground">No entries yet. Add some!</p>
+            <p className="text-center text-muted-foreground">
+              No entries yet. Add some!
+            </p>
           )}
         </ScrollArea>
         <div className="mt-4 space-y-2 mb-12">
           <Button onClick={() => addEntry(section)} className="w-full">
             <Plus className="w-4 h-4 mr-2" /> Add New Entry
           </Button>
-          <Button variant="outline" onClick={() => saveChanges(section)} className="w-full">
+          <Button
+            variant="outline"
+            onClick={() => saveChanges(section)}
+            className="w-full"
+          >
             Save Changes
           </Button>
         </div>
@@ -498,9 +666,19 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
     >
       <div className="flex flex-col h-full">
         <div className="p-4 border-b flex justify-between items-center">
-          {!isCollapsed && <h2 className="text-lg font-semibold">Resume Sections</h2>}
-          <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)}>
-            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {!isCollapsed && (
+            <h2 className="text-lg font-semibold">Resume Sections</h2>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            {isCollapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
           </Button>
         </div>
         <ScrollArea className="flex-grow">
@@ -510,17 +688,23 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
                 <SheetTrigger asChild>
                   <Button
                     variant={activeSection === section.id ? "default" : "ghost"}
-                    className={`w-full justify-start ${isCollapsed ? "px-2" : ""}`}
+                    className={`w-full justify-start ${
+                      isCollapsed ? "px-2" : ""
+                    }`}
                     onClick={() => setActiveSection(section.id)}
                   >
                     {section.icon}
-                    {!isCollapsed && <span className="ml-2">{section.title}</span>}
+                    {!isCollapsed && (
+                      <span className="ml-2">{section.title}</span>
+                    )}
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-[400px] sm:w-[540px]">
                   <SheetHeader>
                     <SheetTitle>Edit {section.title}</SheetTitle>
-                    <SheetDescription>Modify or add new entries to this section.</SheetDescription>
+                    <SheetDescription>
+                      Modify or add new entries to this section.
+                    </SheetDescription>
                   </SheetHeader>
                   {renderSheetContent(section.id)}
                 </SheetContent>
@@ -536,4 +720,3 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
     </div>
   );
 }
-
