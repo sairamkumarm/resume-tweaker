@@ -1,7 +1,10 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
+'use client'
+
+
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Provider } from "react-redux";
+import store from "@/store";
 
 // const LTWave = localFont({
 //   src: "./fonts/LTWave-Regular.ttf",
@@ -9,11 +12,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 //   weight: "100 900",
 // });
 
-export const metadata: Metadata = {
-  title: "Wibblit Resume Tweaker",
-  description:
-    "Craft a standout resume with ease using the power of AI. Receive tailored suggestions, optimize your content for specific job roles, and ensure your resume perfectly aligns with job descriptions—designed to accelerate your path to landing your dream job.",
-};
 
 export default function RootLayout({
   children,
@@ -35,7 +33,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Provider store={store}>{children}</Provider>
         </ThemeProvider>
       </body>
     </html>

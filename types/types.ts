@@ -191,14 +191,13 @@ export type ResumeData = {
   projects?: Project[];
   references?: Reference[];
   certifications?: Certification[];
-  pubications?: Publication[];
+  publications?: Publication[];
   awards?: Award[];
   volunteerings?: Volunteering[];
   languages?: Language[];
   experiences?: Experience[];
   education?: Education[];
 }
-
 
 //RightSideBar
 export type ResumeStyles = Template & {
@@ -216,6 +215,3 @@ export type Resume = {
   resumeSections: ResumeData;
   styleOptions: ResumeStyles;
 }
-
-
-
