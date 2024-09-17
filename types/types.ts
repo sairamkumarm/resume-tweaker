@@ -316,7 +316,10 @@ export interface ResumeData {
   basics: Basics[];
   summary: Summary[];
   profiles: Profile[];
-  skills: { categories: SkillCategory[] }[];
+  skills: {
+    id: string; //i added this
+    categories: SkillCategory[]
+  }[];
   projects: Project[];
   education: Education[];
   experience: Experience[];

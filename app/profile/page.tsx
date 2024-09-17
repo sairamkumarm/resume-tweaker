@@ -721,7 +721,7 @@ const emptyResumeData: ResumeData = {
   ],
   summary: [{ content: "" }],
   profiles: [],
-  skills: [{ categories: [] }],
+  skills: [{ id:"",categories: [] }],
   projects: [],
   education: [],
   experience: [],
