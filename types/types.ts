@@ -1,14 +1,14 @@
   
-// export type BlogType = {
-//     id: number,
-//     title: string;
-//     excerpt: string;
-//     content: string;
-//     date: string;
-//     readTime: string;
-//     category: string;
-//     image: string;
-// }
+export type BlogType = {
+    id: number,
+    title: string;
+    excerpt: string;
+    content: string;
+    date: string;
+    readTime: string;
+    category: string;
+    image: string;
+}
 
 // // export interface Education {
 // //     university_name: string
