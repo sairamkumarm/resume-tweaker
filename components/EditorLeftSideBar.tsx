@@ -729,8 +729,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useTheme } from "next-themes";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store";
 import {
 	ChevronLeft,
 	ChevronRight,
@@ -786,17 +784,11 @@ export default function LeftSideBar({ activeSection, setActiveSection }: LeftSid
 		certifications: [],
 		references: [],
 	});
-	const { theme } = useTheme();
-	const resumeDataView = useSelector((state: RootState) => state.leftsidebar);
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		dispatch(UpdateLeftBarData(resumeData));
 	}, [resumeData, dispatch]);
-
-	useEffect(() => {
-		console.log("Current resume data:", resumeDataView);
-	}, [resumeDataView]);
 
 	const resumeSections: ResumeSection[] = [
 		{
